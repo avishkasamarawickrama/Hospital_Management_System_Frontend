@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ministry of Foreign Affairs - eChanneling</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #004080, #002d5a);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container1 {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            color: black;
+        }
+        .btn-primary {
+            background-color: #004080;
+            border: none;
+            transition: background 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #002d5a;
+        }
+        .text-primary {
+            color: #004080 !important;
+        }
+        .card {
+            margin-bottom: 20px;
+            border: 1px solid #004080;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .location {
+            color: gray;
+            font-style: italic;
+        }
+        .form-control, .form-select {
+            border: 1px solid #004080;
+            background-color: white;
+        }
+        .header-image {
+            display: block;
+            margin: 20px auto;
+            max-width: 25%;
+            height: auto;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow w-100 position-fixed top-0">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="user_dashboard.html">
+            <img src="images/gallery/health_care.png" alt="eChannelling Logo" width="150">
+        </a>
+
+        <!-- Navbar Toggle for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active  bg-success-subtle text-success w-100" href="my_appointment.html">My Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary ms-3" href="sign_in.html">Sign Up</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container1 mt-5 pt-5 ">
+    <h2 class="text-center text-primary ">Ministry of Foreign Affairs</h2>
+    <img src="images/gallery/emblem.png" alt="Sri Lanka" class="header-image">
+    <div class="mb-3">
+        <label for="branch" class="form-label text-primary">Select Branch</label>
+        <select class="form-select" id="branch">
+            <option value="">Choose a branch</option>
+            <option>Consular Office - Battaramulla</option>
+            <option>Regional Consular Office - Kandy</option>
+            <option>Regional Consular Office - Kurunegala</option>
+            <option>Regional Consular Office - Trincomalee</option>
+            <option>Regional Consular Office - Matara</option>
+            <option>Regional Consular Office - Jaffna</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="date" class="form-label text-primary">Select Date</label>
+        <input type="date" class="form-control" id="date">
+    </div>
+    <button class="btn btn-primary w-100">Search</button>
+    <h4 class="text-center text-primary mt-4">Available Offices</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="text-primary">Consular Office - Battaramulla</h5>
+                <p class="location">Battaramulla</p>
+                <button class="btn btn-primary w-100">Book Now</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="text-primary">Regional Consular Office - Kandy</h5>
+                <p class="location">Getambe</p>
+                <button class="btn btn-primary w-100">Book Now</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="text-primary">Regional Consular Office - Kurunegala</h5>
+                <p class="location">Kurunegala</p>
+                <button class="btn btn-primary w-100">Book Now</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="text-primary">Regional Consular Office - Trincomalee</h5>
+                <p class="location">Trincomalee</p>
+                <button class="btn btn-primary w-100">Book Now</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="text-primary">Regional Consular Office - Matara</h5>
+                <p class="location">Matara</p>
+                <button class="btn btn-primary w-100">Book Now</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <h5 class="text-primary">Regional Consular Office - Jaffna</h5>
+                <p class="location">Jaffna</p>
+                <button class="btn btn-primary w-100">Book Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
