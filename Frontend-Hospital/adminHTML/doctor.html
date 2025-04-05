@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* All the CSS styles from the patient page */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background-color: #813271;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h2 {
+            color: #734a5b;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+        }
+        .btn {
+            font-weight: 600;
+            padding: 8px 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .btn-success {
+            background-color: #813271;
+            border-color: #813271;
+        }
+        .btn-success:hover {
+            background-color: #6a2a5d;
+            border-color: #6a2a5d;
+        }
+        .table {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .table thead {
+            background-color: #4e73df;
+            color: white;
+        }
+        .table th {
+            font-weight: 600;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --bg-light: #f8f9fa;
+        }
+        .sidebar {
+            background: linear-gradient(to bottom, var(--primary-color), #0056b3);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .sidebar-logo {
+            max-width: 120px;
+            margin: 20px auto;
+            display: block;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+        footer {
+            background: linear-gradient(to right, var(--primary-color), #0056b3);
+        }
+        .badge {
+            font-size: 0.9em;
+            padding: 5px 8px;
+        }
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <img src="../images/gallery/health_care.png" alt="Hospital Logo" class="sidebar-logo">
+    <h4 class="text-center mb-4">Admin Panel</h4>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="admin_dashboard.html">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="user.html">
+                <i class="bi bi-people"></i> Users
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="appointment.html">
+                <i class="bi bi-calendar-check"></i> Appointments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="doctor.html">
+                <i class="bi bi-person-badge"></i> Doctors
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="department.html">
+                <i class="bi bi-building"></i> Departments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="patient.html">
+                <i class="bi bi-heart-pulse"></i> Patients
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="report.html">
+                <i class="bi bi-file-earmark-text"></i> Reports
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="logout.html">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <section id="doctorSec">
+        <h2>Doctor Management</h2>
+
+        <div class="form-section">
+            <form id="doctorForm">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="doctorId" class="form-label">Doctor ID</label>
+                        <input type="text" class="form-control" id="doctorId" readonly>
+                    </div>
+                    <!-- Keep your existing HTML structure, just update the User ID field -->
+                    <div class="col-md-3">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="userId" required readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="departmentId" class="form-label">Department</label>
+                        <select class="form-control" id="departmentId" required onchange="loadDepartmentDetails()">
+                            <option value="">Select Department</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="departmentName" class="form-label">Department Name</label>
+                        <input type="text" class="form-control" id="departmentName" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <input type="text" class="form-control" id="specialization" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="availableFrom" class="form-label">Available From</label>
+                        <input type="time" class="form-control" id="availableFrom" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="availableTo" class="form-label">Available To</label>
+                        <input type="time" class="form-control" id="availableTo" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="channelingFee" class="form-label">Channeling Fee</label>
+                        <input type="number" step="0.01" class="form-control" id="channelingFee" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="maxAppointments" class="form-label">Max Appointments/Day</label>
+                        <input type="number" class="form-control" id="maxAppointments" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-control" id="gender">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status">
+                            <option value="true">Active</option>
+                            <option value="false">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label for="qualifications" class="form-label">Qualifications</label>
+                        <textarea class="form-control" id="qualifications" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="button" class="btn btn-success" onclick="saveDoctor()">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="updateDoctor()">Update</button>
+                    <button type="button" class="btn btn-danger" onclick="deleteDoctor()">Delete</button>
+                    <button type="reset" class="btn btn-secondary">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th>Doctor ID</th>
+                    <th>Full Name</th>
+                    <th>Specialization</th>
+                    <th>Department</th>
+                    <th>Available Hours</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="doctorTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Document ready function
+    document.addEventListener("DOMContentLoaded", function () {
+        generateNextDoctorId();
+        generateNextUserId(); // Add this line
+        loadDoctors();
+        loadDepartments();
+    });
+
+    // Add this new function
+    function generateNextUserId() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/doctor/nextUserId",
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function (response) {
+                if (response.data) {
+                    $("#userId").val(response.data);
+                } else {
+                    // Fallback if API fails
+                    const randomNum = Math.floor(Math.random() * 900) + 100;
+                    $("#userId").val("USR" + randomNum);
+                }
+            },
+            error: function (xhr) {
+                console.error("Error getting next user ID:", xhr);
+                // Fallback if API fails
+                const randomNum = Math.floor(Math.random() * 900) + 100;
+                $("#userId").val("USR" + randomNum);
+            }
+        });
+    }
+    // Generate doctor ID automatically
+    function generateNextDoctorId() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/doctor/getLastDoctorId",
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                let nextId = "DOC01"; // Default starting ID
+
+                if (response.data && response.data.lastDoctorId) {
+                    // Extract the numeric part of the last ID and increment
+                    const lastId = response.data.lastDoctorId;
+                    const lastNum = parseInt(lastId.replace(/DOC0?/, '')) || 0;
+                    nextId = "DOC" + (lastNum + 1).toString().padStart(2, '0');
+                }
+
+                $("#doctorId").val(nextId);
+            },
+            error: function(xhr) {
+                console.error("Error getting last doctor ID:", xhr);
+                // Fallback to default ID if API fails
+                $("#doctorId").val("DOC01");
+            }
+        });
+    }
+    // Search user function
+    function searchUser() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const userId = $("#userId").val();
+        if (!userId) {
+            alert("Please enter a User ID to search");
+            return;
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/user/getUserById/${userId}`,
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                if (response.data) {
+                    const user = response.data;
+                    $("#fullName").val(user.fullName);
+                    $("#email").val(user.email);
+                    $("#phoneNumber").val(user.phoneNumber);
+                    $("#gender").val(user.gender);
+                } else {
+                    alert("User not found");
+                }
+            },
+            error: function(xhr) {
+                alert("Error searching user: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+
+    // Load departments for dropdown
+    function loadDepartments() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/department/getAll",
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                const select = $("#departmentId");
+                select.empty();
+                select.append('<option value="">Select Department</option>');
+
+                if (response.data && Array.isArray(response.data)) {
+                    response.data.forEach(dept => {
+                        select.append(`<option value="${dept.departmentId}">${dept.departmentName}</option>`);
+                    });
+                }
+            },
+            error: function(xhr) {
+                alert("Error loading departments: " + xhr.statusText);
+            }
+        });
+    }
+    // Load department details when selected
+    function loadDepartmentDetails() {
+        const departmentId = $("#departmentId").val();
+        if (!departmentId) return;
+
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) return;
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/department/getDepartmentById/${departmentId}`,
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                if (response.data) {
+                    const dept = response.data;
+                    $("#departmentName").val(dept.departmentName);
+                    $("#specialization").val(dept.specialization || "");
+                }
+            },
+            error: function(xhr) {
+                console.error("Error loading department details:", xhr);
+            }
+        });
+    }
+
+    // Validate doctor form
+    function validateDoctorForm() {
+        const fullName = $("#fullName").val();
+        const email = $("#email").val();
+        const phoneNumber = $("#phoneNumber").val();
+        const specialization = $("#specialization").val();
+        const departmentId = $("#departmentId").val();
+        const departmentName = $("#departmentName").val();
+        const availableFrom = $("#availableFrom").val();
+        const availableTo = $("#availableTo").val();
+        const channelingFee = $("#channelingFee").val();
+
+        if (!fullName) {
+            alert("Full name is required");
+            return false;
+        }
+        if (!email) {
+            alert("Email is required");
+            return false;
+        }
+        if (!phoneNumber) {
+            alert("Phone number is required");
+            return false;
+        }
+        if (!specialization) {
+            alert("Specialization is required");
+            return false;
+        }
+        if (!departmentId) {
+            alert("Department is required");
+            return false;
+        }
+        if (!availableFrom || !availableTo) {
+            alert("Available hours are required");
+            return false;
+        }
+        if (!channelingFee) {
+            alert("Channeling fee is required");
+            return false;
+        }
+        return true;
+    }
+
+    // Save doctor function
+    function saveDoctor() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        if (!validateDoctorForm()) return;
+
+        let doctor = {
+            userId: $("#userId").val(),
+            fullName: $("#fullName").val(),
+            email: $("#email").val(),
+            phoneNumber: $("#phoneNumber").val(),
+            gender: $("#gender").val(),
+            specialization: $("#specialization").val(),
+            qualifications: $("#qualifications").val(),
+            departmentId: $("#departmentId").val(),
+            departmentName: $("#departmentName").val(),
+            availableFrom: $("#availableFrom").val(),
+            availableTo: $("#availableTo").val(),
+            channelingFee: parseFloat($("#channelingFee").val()),
+            maxAppointmentsPerDay: parseInt($("#maxAppointments").val()),
+            isActive: $("#status").val() === "true"
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/doctor/save",
+            type: "POST",
+            contentType: "application/json",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            data: JSON.stringify(doctor),
+            success: function(response) {
+                alert(response.msg || "Doctor saved successfully");
+                loadDoctors();
+                $("#doctorForm")[0].reset();
+                generateNextDoctorId();
+                generateNextUserId(); // Generate next user ID after save
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+
+    function loadDoctors() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/doctor/getAll",
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                $("#doctorTableBody").empty();
+                if(response.data && Array.isArray(response.data)) {
+                    response.data.forEach(doctor => {
+                        // Format available times if needed
+                        const fromTime = doctor.availableFrom ? doctor.availableFrom.substring(0,5) : '';
+                        const toTime = doctor.availableTo ? doctor.availableTo.substring(0,5) : '';
+
+                        $("#doctorTableBody").append(`
+                        <tr>
+                            <td>${doctor.doctorId}</td>
+                            <td>${doctor.fullName}</td>
+                            <td>${doctor.specialization}</td>
+                            <td>${doctor.departmentName}</td>
+                            <td>${fromTime} - ${toTime}</td>
+                            <td>$${doctor.channelingFee?.toFixed(2) || '0.00'}</td>
+                            <td>${doctor.isActive ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-danger">Inactive</span>'}</td>
+                            <td>
+                                <button class="btn btn-sm btn-warning"
+                                    onclick="editDoctor('${doctor.doctorId}')">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                    onclick="confirmDeleteDoctor('${doctor.doctorId}')">
+                                    <i class="bi bi-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                    });
+                }
+            },
+            error: function(xhr) {
+                console.error("Error loading doctors:", xhr);
+                alert("Error loading doctors: " + xhr.statusText);
+            }
+        });
+    }
+
+    // Edit doctor function
+    function editDoctor(doctorId) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            return;
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/doctor/getDoctorById/${doctorId}`,
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                if(response.data) {
+                    const doctor = response.data;
+                    $("#doctorId").val(doctor.doctorId);
+                    $("#userId").val(doctor.userId);
+                    $("#fullName").val(doctor.fullName);
+                    $("#email").val(doctor.email);
+                    $("#phoneNumber").val(doctor.phoneNumber);
+                    $("#gender").val(doctor.gender);
+                    $("#specialization").val(doctor.specialization);
+                    $("#qualifications").val(doctor.qualifications);
+                    $("#departmentId").val(doctor.departmentId);
+                    $("#departmentName").val(doctor.departmentName || "");
+                    $("#availableFrom").val(doctor.availableFrom.substring(0,5));
+                    $("#availableTo").val(doctor.availableTo.substring(0,5));
+                    $("#channelingFee").val(doctor.channelingFee);
+                    $("#maxAppointments").val(doctor.maxAppointmentsPerDay);
+                    $("#status").val(doctor.isActive.toString());
+
+                    // Scroll to form
+                    $('html, body').animate({
+                        scrollTop: $("#doctorForm").offset().top
+                    }, 500);
+                }
+            },
+            error: function(xhr) {
+                alert("Error loading doctor: " + xhr.statusText);
+            }
+        });
+    }
+
+    // Update doctor function
+    function updateDoctor() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            return;
+        }
+
+        if (!validateDoctorForm()) return;
+
+        let doctor = {
+            doctorId: $("#doctorId").val(),
+            userId: $("#userId").val(),
+            fullName: $("#fullName").val(),
+            email: $("#email").val(),
+            phoneNumber: $("#phoneNumber").val(),
+            gender: $("#gender").val(),
+            specialization: $("#specialization").val(),
+            qualifications: $("#qualifications").val(),
+            departmentId: $("#departmentId").val(),
+            availableFrom: $("#availableFrom").val(),
+            availableTo: $("#availableTo").val(),
+            channelingFee: parseFloat($("#channelingFee").val()),
+            maxAppointmentsPerDay: parseInt($("#maxAppointments").val()),
+            isActive: $("#status").val() === "true"
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/doctor/update",
+            type: "PUT",
+            contentType: "application/json",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            data: JSON.stringify(doctor),
+            success: function(response) {
+                alert(response.msg || "Doctor updated successfully");
+                loadDoctors();
+                $("#doctorForm")[0].reset();
+                generateDoctorId();
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+
+    // Confirm delete function
+    function confirmDeleteDoctor(doctorId) {
+        if (confirm(`Are you sure you want to delete doctor ${doctorId}?`)) {
+            deleteDoctor(doctorId);
+        }
+    }
+
+    // Delete doctor function
+    function deleteDoctor(doctorId) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            return;
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/doctor/delete/${doctorId}`,
+            type: "DELETE",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                alert(response.msg || "Doctor deleted successfully");
+                loadDoctors();
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* All the CSS styles from the doctor page */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar {
+            background-color: #813271;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+        .container {
+            margin-top: 30px;
+        }
+        h2 {
+            color: #734a5b;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 8px 12px;
+        }
+        .btn {
+            font-weight: 600;
+            padding: 8px 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        .btn-success {
+            background-color: #813271;
+            border-color: #813271;
+        }
+        .btn-success:hover {
+            background-color: #6a2a5d;
+            border-color: #6a2a5d;
+        }
+        .table {
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .table thead {
+            background-color: #4e73df;
+            color: white;
+        }
+        .table th {
+            font-weight: 600;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --bg-light: #f8f9fa;
+        }
+        .sidebar {
+            background: linear-gradient(to bottom, var(--primary-color), #0056b3);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        .sidebar-logo {
+            max-width: 120px;
+            margin: 20px auto;
+            display: block;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.7);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+        }
+        footer {
+            background: linear-gradient(to right, var(--primary-color), #0056b3);
+        }
+        .badge {
+            font-size: 0.9em;
+            padding: 5px 8px;
+        }
+    </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <img src="../images/gallery/health_care.png" alt="Hospital Logo" class="sidebar-logo">
+    <h4 class="text-center mb-4">Admin Panel</h4>
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <a class="nav-link" href="admin_dashboard.html">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="user.html">
+                <i class="bi bi-people"></i> Users
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="appointment.html">
+                <i class="bi bi-calendar-check"></i> Appointments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="doctor.html">
+                <i class="bi bi-person-badge"></i> Doctors
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="department.html">
+                <i class="bi bi-building"></i> Departments
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="patient.html">
+                <i class="bi bi-heart-pulse"></i> Patients
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="report.html">
+                <i class="bi bi-file-earmark-text"></i> Reports
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="settings.html">
+                <i class="bi bi-gear"></i> Settings
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="logout.html">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <section id="patientSec">
+        <h2>Patient Management</h2>
+
+        <div class="form-section">
+            <form id="patientForm">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="patientId" class="form-label">Patient ID</label>
+                        <input type="text" class="form-control" id="patientId" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="userId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="userId" required readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="fullName" required>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="emergencyContact" class="form-label">Emergency Contact</label>
+                        <input type="tel" class="form-control" id="emergencyContact">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dateOfBirth">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-control" id="gender">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="bloodGroup" class="form-label">Blood Group</label>
+                        <select class="form-control" id="bloodGroup">
+                            <option value="">Select</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="medicalHistory" class="form-label">Medical History</label>
+                        <textarea class="form-control" id="medicalHistory" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="allergies" class="form-label">Allergies</label>
+                        <textarea class="form-control" id="allergies" rows="2"></textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="currentMedications" class="form-label">Current Medications</label>
+                        <textarea class="form-control" id="currentMedications" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="insuranceProvider" class="form-label">Insurance Provider</label>
+                        <input type="text" class="form-control" id="insuranceProvider">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="insurancePolicyNumber" class="form-label">Policy Number</label>
+                        <input type="text" class="form-control" id="insurancePolicyNumber">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <button type="button" id="saveBtn" class="btn btn-success" onclick="savePatient()">Save</button>
+                    <button type="button" id="updateBtn" class="btn btn-primary" onclick="updatePatient()" style="display:none;">Update</button>
+                    <button type="button" class="btn btn-danger" onclick="deletePatient()">Delete</button>
+                    <button type="reset" class="btn btn-secondary" onclick="resetForm()">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Blood Group</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="patientTableBody"></tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Document ready function
+    document.addEventListener("DOMContentLoaded", function () {
+        generateNextPatientId();
+        generateNextUserId();
+        loadPatients();
+    });
+
+    // Generate patient ID automatically
+    function generateNextPatientId() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/patient/getLastPatientId",
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function (response) {
+                if (response.data) {
+                    $("#patientId").val(response.data);
+                } else {
+                    // Fallback if API fails
+                    $("#patientId").val("PAT001");
+                }
+            },
+            error: function (xhr) {
+                console.error("Error getting next patient ID:", xhr);
+                // Fallback if API fails
+                $("#patientId").val("PAT001");
+            }
+        });
+    }
+
+    // Generate next user ID for patient
+    function generateNextUserId() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/patient/nextUserId",
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function (response) {
+                if (response.data) {
+                    $("#userId").val(response.data);
+                } else {
+                    // Fallback if API fails
+                    const randomNum = Math.floor(Math.random() * 900) + 100;
+                    $("#userId").val("USR" + randomNum);
+                }
+            },
+            error: function (xhr) {
+                console.error("Error getting next user ID:", xhr);
+                // Fallback if API fails
+                const randomNum = Math.floor(Math.random() * 900) + 100;
+                $("#userId").val("USR" + randomNum);
+            }
+        });
+    }
+
+    // Validate patient form
+    function validatePatientForm() {
+        const fullName = $("#fullName").val();
+        const email = $("#email").val();
+        const phoneNumber = $("#phoneNumber").val();
+
+        if (!fullName) {
+            alert("Full name is required");
+            return false;
+        }
+        if (!email) {
+            alert("Email is required");
+            return false;
+        }
+        if (!phoneNumber) {
+            alert("Phone number is required");
+            return false;
+        }
+        return true;
+    }
+
+    // Save patient function
+    function savePatient() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        if (!validatePatientForm()) return;
+
+        let patient = {
+            patientId: $("#patientId").val(),
+            userId: $("#userId").val(),
+            fullName: $("#fullName").val(),
+            email: $("#email").val(),
+            phoneNumber: $("#phoneNumber").val(),
+            dateOfBirth: $("#dateOfBirth").val(),
+            gender: $("#gender").val(),
+            address: $("#address").val(),
+            emergencyContact: $("#emergencyContact").val(),
+            bloodGroup: $("#bloodGroup").val(),
+            medicalHistory: $("#medicalHistory").val(),
+            allergies: $("#allergies").val(),
+            currentMedications: $("#currentMedications").val(),
+            insuranceProvider: $("#insuranceProvider").val(),
+            insurancePolicyNumber: $("#insurancePolicyNumber").val()
+        };
+
+        // Determine endpoint based on whether we have an ID
+        const url = patient.patientId ?
+            "http://localhost:8080/api/v1/patient/update" :
+            "http://localhost:8080/api/v1/patient/save";
+
+        const method = patient.patientId ? "PUT" : "POST";
+
+        $.ajax({
+            url: url,
+            type: method,
+            contentType: "application/json",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            data: JSON.stringify(patient),
+            success: function(response) {
+                alert(response.msg || (patient.patientId ? "Patient updated" : "Patient created"));
+                loadPatients();
+                resetForm();
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+
+    // Load patients function
+    function loadPatients() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/patient/getAll",
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                $("#patientTableBody").empty();
+                if(response.data && Array.isArray(response.data)) {
+                    response.data.forEach(patient => {
+                        $("#patientTableBody").append(`
+                            <tr>
+                                <td>${patient.patientId}</td>
+                                <td>${patient.fullName}</td>
+                                <td>${patient.email}</td>
+                                <td>${patient.phoneNumber}</td>
+                                <td>${patient.gender || '-'}</td>
+                                <td>${patient.bloodGroup || '-'}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning"
+                                        onclick="editPatient('${patient.patientId}')">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="confirmDeletePatient('${patient.patientId}')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+            },
+            error: function(xhr) {
+                console.error("Error loading patients:", xhr);
+                alert("Error loading patients: " + xhr.statusText);
+            }
+        });
+    }
+
+    // Edit patient function
+    function editPatient(patientId) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            return;
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/patient/getPatientById/${patientId}`,
+            type: "GET",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                if(response.data) {
+                    const patient = response.data;
+                    $("#patientId").val(patient.patientId);
+                    $("#userId").val(patient.userId);
+                    $("#fullName").val(patient.fullName);
+                    $("#email").val(patient.email);
+                    $("#phoneNumber").val(patient.phoneNumber);
+                    $("#emergencyContact").val(patient.emergencyContact || "");
+                    $("#dateOfBirth").val(patient.dateOfBirth || "");
+                    $("#gender").val(patient.gender || "");
+                    $("#address").val(patient.address || "");
+                    $("#bloodGroup").val(patient.bloodGroup || "");
+                    $("#medicalHistory").val(patient.medicalHistory || "");
+                    $("#allergies").val(patient.allergies || "");
+                    $("#currentMedications").val(patient.currentMedications || "");
+                    $("#insuranceProvider").val(patient.insuranceProvider || "");
+                    $("#insurancePolicyNumber").val(patient.insurancePolicyNumber || "");
+
+                    // Show update button and hide save button
+                    $("#saveBtn").hide();
+                    $("#updateBtn").show();
+
+                    // Scroll to form
+                    $('html, body').animate({
+                        scrollTop: $("#patientForm").offset().top
+                    }, 500);
+                }
+            },
+            error: function(xhr) {
+                alert("Error loading patient: " + xhr.statusText);
+            }
+        });
+    }
+
+    // Update patient function
+    function updatePatient() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            return;
+        }
+
+        if (!validatePatientForm()) return;
+
+        let patient = {
+            patientId: $("#patientId").val(),
+            userId: $("#userId").val(),
+            fullName: $("#fullName").val(),
+            email: $("#email").val(),
+            phoneNumber: $("#phoneNumber").val(),
+            dateOfBirth: $("#dateOfBirth").val(),
+            gender: $("#gender").val(),
+            address: $("#address").val(),
+            emergencyContact: $("#emergencyContact").val(),
+            bloodGroup: $("#bloodGroup").val(),
+            medicalHistory: $("#medicalHistory").val(),
+            allergies: $("#allergies").val(),
+            currentMedications: $("#currentMedications").val(),
+            insuranceProvider: $("#insuranceProvider").val(),
+            insurancePolicyNumber: $("#insurancePolicyNumber").val()
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/patient/update",
+            type: "PUT",
+            contentType: "application/json",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            data: JSON.stringify(patient),
+            success: function(response) {
+                alert(response.msg || "Patient updated successfully");
+                loadPatients();
+                resetForm();
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+
+    // Confirm delete function
+    function confirmDeletePatient(patientId) {
+        if (confirm(`Are you sure you want to delete patient ${patientId}?`)) {
+            deletePatient(patientId);
+        }
+    }
+
+    // Delete patient function
+    function deletePatient(patientId) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            alert("Please login first");
+            return;
+        }
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/patient/delete/${patientId}`,
+            type: "DELETE",
+            headers: { "Authorization": `Bearer ${authToken}` },
+            success: function(response) {
+                alert(response.msg || "Patient deleted successfully");
+                loadPatients();
+            },
+            error: function(xhr) {
+                alert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+            }
+        });
+    }
+
+    function resetForm() {
+        $("#patientForm")[0].reset();
+        $("#patientId").val(""); // Clear patient ID
+        $("#userId").val(""); // Clear user ID
+        generateNextPatientId();
+        generateNextUserId();
+        $("#saveBtn").show();
+        $("#updateBtn").hide();
+    }
+</script>
+</body>
+</html>
