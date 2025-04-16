@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - eChannelling</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #004080;
+            --accent-color: #00a86b;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: white !important;
+        }
+
+        .navbar-brand img {
+            transition: transform 0.3s;
+        }
+
+        .navbar-brand:hover img {
+            transform: scale(1.05);
+        }
+
+        .nav-link.active {
+            color: var(--accent-color) !important;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('../images/gallery/healthcare-pattern.png') repeat;
+            opacity: 0.1;
+        }
+
+        .search-card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.2);
+            border: none;
+            transition: transform 0.3s;
+        }
+
+        .search-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 10px 15px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 102, 204, 0.25);
+        }
+
+        .service-card {
+            border: none;
+            border-radius: 12px;
+            transition: all 0.3s;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .doctor-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-img {
+            height: 200px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .specialty-badge {
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.8rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        .blog-card {
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .blog-img {
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--secondary-color), #002b5c);
+            color: white;
+            padding: 3rem 0 0;
+        }
+
+        .footer a {
+            color: #a3d5ff;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: white;
+            text-decoration: none;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Custom carousel styles */
+        .carousel-indicators button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin: 0 5px;
+        }
+
+        .carousel-control-prev, .carousel-control-next {
+            width: 5%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 3rem 0;
+            }
+
+            .search-card {
+                margin-top: 1rem;
+            }
+        }
+
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="user_dashboard.html">
+            <img src="../images/gallery/health_care.png" alt="eChannelling Logo" width="150">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="user_dashboard.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="my_appointment.html">My Appointments</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="doctors.html">Doctors</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hospitals.html">Hospitals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="services.html">Services</a>
+                </li>
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle me-1"></i> My Account
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="settings.html"><i class="bi bi-gear me-2"></i>Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section with Carousel -->
+<section class="hero-section">
+    <div class="container position-relative">
+        <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner rounded-4 overflow-hidden">
+                <div class="carousel-item active">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h1 class="display-5 fw-bold mb-3">Quality Healthcare Made Easy</h1>
+                            <p class="lead mb-4">Book appointments with top specialists in Sri Lanka from the comfort of your home.</p>
+                            <a href="#findDoctor" class="btn btn-light btn-lg me-2">Find a Doctor</a>
+                            <a href="services.html" class="btn btn-outline-light btn-lg">Our Services</a>
+                        </div>
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="../images/gallery/doctor-consultation.jpg" class="img-fluid rounded-3 shadow" alt="Doctor Consultation">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h1 class="display-5 fw-bold mb-3">24/7 Online Consultations</h1>
+                            <p class="lead mb-4">Get medical advice anytime, anywhere through our secure video consultation platform.</p>
+                            <a href="telemedicine.html" class="btn btn-light btn-lg me-2">Try Telemedicine</a>
+                            <a href="#" class="btn btn-outline-light btn-lg">Learn More</a>
+                        </div>
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="../images/gallery/online-consultation.jpg" class="img-fluid rounded-3 shadow" alt="Online Consultation">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h1 class="display-5 fw-bold mb-3">Emergency Services</h1>
+                            <p class="lead mb-4">Immediate assistance when you need it most. Connect with emergency services quickly.</p>
+                            <a href="emergency.html" class="btn btn-light btn-lg me-2">Emergency Help</a>
+                            <a href="#" class="btn btn-outline-light btn-lg">Hotline Numbers</a>
+                        </div>
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="../images/gallery/emergency-services.jpg" class="img-fluid rounded-3 shadow" alt="Emergency Services">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-4 bg-light">
+    <div class="container">
+        <div class="row g-4 text-center">
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 bg-white shadow-sm">
+                    <h3 class="text-primary mb-0">15,000+</h3>
+                    <p class="mb-0 text-muted">Happy Patients</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 bg-white shadow-sm">
+                    <h3 class="text-primary mb-0">2,500+</h3>
+                    <p class="mb-0 text-muted">Qualified Doctors</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 bg-white shadow-sm">
+                    <h3 class="text-primary mb-0">200+</h3>
+                    <p class="mb-0 text-muted">Hospitals & Clinics</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-3 rounded-3 bg-white shadow-sm">
+                    <h3 class="text-primary mb-0">24/7</h3>
+                    <p class="mb-0 text-muted">Support Available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Find Doctor Section -->
+<section id="findDoctor" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Find a Doctor</h2>
+            <p class="lead text-muted">Book appointments with specialists in just a few clicks</p>
+        </div>
+
+        <div class="card search-card mb-4">
+            <div class="card-body p-4">
+                <form class="row g-3">
+                    <div class="col-md-3">
+                        <label for="doctorName" class="form-label">Doctor Name</label>
+                        <input type="text" class="form-control" id="doctorName" placeholder="Enter doctor's name">
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <select class="form-select" id="specialization">
+                            <option selected>Choose Specialization</option>
+                            <option>Cardiologist</option>
+                            <option>Dermatologist</option>
+                            <option>Neurologist</option>
+                            <option>Orthopedic</option>
+                            <option>Pediatrician</option>
+                            <option>Gynecologist</option>
+                            <option>Psychiatrist</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="hospital" class="form-label">Hospital</label>
+                        <select class="form-select" id="hospital">
+                            <option selected>Choose Hospital</option>
+                            <option>Asiri Hospital</option>
+                            <option>Nawaloka Hospital</option>
+                            <option>Lanka Hospitals</option>
+                            <option>Teaching Hospital</option>
+                            <option>Hemas Hospital</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="appointmentDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="appointmentDate">
+                    </div>
+
+                    <div class="col-12 text-center mt-2">
+                        <button type="submit" class="btn btn-primary px-4 py-2">Search Doctors</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-link text-primary" data-bs-toggle="collapse" href="#advancedSearch" role="button" id="toggleButton">
+                <i class="bi bi-search me-1"></i> Advanced Search <i class="bi bi-chevron-down ms-1"></i>
+            </button>
+        </div>
+
+        <!-- Advanced Search Section -->
+        <div class="collapse mt-3" id="advancedSearch">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h4 class="text-center mb-4">Advanced Search</h4>
+                    <form class="row g-3">
+                        <div class="col-md-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" placeholder="Enter city or area">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="gender" class="form-label">Doctor's Gender</label>
+                            <select class="form-select" id="gender">
+                                <option selected>Any Gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="sessionTime" class="form-label">Session Time</label>
+                            <select class="form-select" id="sessionTime">
+                                <option selected>Any Time</option>
+                                <option>Morning (8AM - 12PM)</option>
+                                <option>Afternoon (1PM - 5PM)</option>
+                                <option>Evening (5PM - 9PM)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="priceRange" class="form-label">Price Range (LKR)</label>
+                            <input type="range" class="form-range" id="priceRange" min="500" max="10000" step="500">
+                            <div class="d-flex justify-content-between">
+                                <small>500</small>
+                                <small>10,000</small>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Languages</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sinhala">
+                                    <label class="form-check-label" for="sinhala">Sinhala</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="tamil">
+                                    <label class="form-check-label" for="tamil">Tamil</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="english">
+                                    <label class="form-check-label" for="english">English</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 text-center mt-3">
+                            <button type="submit" class="btn btn-primary px-4 py-2">Apply Filters</button>
+                            <button type="reset" class="btn btn-outline-secondary ms-2 px-4 py-2">Reset</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Our Services</h2>
+            <p class="lead text-muted">Comprehensive healthcare solutions for all your needs</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Doctor Appointments -->
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card card shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon">
+                            <i class="bi bi-calendar2-heart"></i>
+                        </div>
+                        <h5 class="card-title">Doctor Appointments</h5>
+                        <p class="card-text">Book appointments with specialists at leading hospitals and clinics across the country.</p>
+                        <a href="doctor_appointments.html" class="btn btn-outline-primary mt-3">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Online Consultations -->
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card card shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon">
+                            <i class="bi bi-camera-video"></i>
+                        </div>
+                        <h5 class="card-title">Online Consultations</h5>
+                        <p class="card-text">Consult with doctors via secure video calls from the comfort of your home.</p>
+                        <a href="online_consultations.html" class="btn btn-outline-primary mt-3">Consult Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medicine Delivery -->
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card card shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon">
+                            <i class="bi bi-capsule"></i>
+                        </div>
+                        <h5 class="card-title">Medicine Delivery</h5>
+                        <p class="card-text">Get prescribed medicines delivered to your doorstep within hours.</p>
+                        <a href="medicine_delivery.html" class="btn btn-outline-primary mt-3">Order Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Checkups -->
+            <div class="col-md-6 col-lg-3">
+                <div class="service-card card shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+                        <h5 class="card-title">Health Checkups</h5>
+                        <p class="card-text">Comprehensive health screening packages at discounted rates.</p>
+                        <a href="health_checkups.html" class="btn btn-outline-primary mt-3">Book Checkup</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="services.html" class="btn btn-primary px-4 py-2">View All Services <i class="bi bi-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Top Specialists Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Top Specialists</h2>
+            <p class="lead text-muted">Experienced doctors across various specialties</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Cardiologist -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card card shadow-sm h-100">
+                    <img src="../images/gallery/doc1.png" class="card-img-top doctor-img" alt="Cardiologist">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Sanjaya Perera</h5>
+                        <span class="specialty-badge mb-2">Cardiologist</span>
+                        <p class="card-text text-muted small">MBBS, MD (Cardiology), PhD</p>
+                        <div class="d-flex justify-content-center gap-2 mb-3">
+                            <span class="badge bg-light text-dark"><i class="bi bi-star-fill text-warning me-1"></i> 4.9</span>
+                            <span class="badge bg-light text-dark"><i class="bi bi-briefcase-fill text-primary me-1"></i> 15 yrs</span>
+                        </div>
+                        <a href="doctor_profile.html" class="btn btn-sm btn-outline-primary me-2">View Profile</a>
+                        <a href="book_appointment.html" class="btn btn-sm btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neurologist -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card card shadow-sm h-100">
+                    <img src="../images/gallery/doc2.png" class="card-img-top doctor-img" alt="Neurologist">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Anoma Silva</h5>
+                        <span class="specialty-badge mb-2">Neurologist</span>
+                        <p class="card-text text-muted small">MBBS, MD (Neurology), FRCP</p>
+                        <div class="d-flex justify-content-center gap-2 mb-3">
+                            <span class="badge bg-light text-dark"><i class="bi bi-star-fill text-warning me-1"></i> 4.8</span>
+                            <span class="badge bg-light text-dark"><i class="bi bi-briefcase-fill text-primary me-1"></i> 12 yrs</span>
+                        </div>
+                        <a href="doctor_profile.html" class="btn btn-sm btn-outline-primary me-2">View Profile</a>
+                        <a href="book_appointment.html" class="btn btn-sm btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orthopedic Surgeon -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card card shadow-sm h-100">
+                    <img src="../images/gallery/doc3.png" class="card-img-top doctor-img" alt="Orthopedic Surgeon">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Rajiv Fernando</h5>
+                        <span class="specialty-badge mb-2">Orthopedic Surgeon</span>
+                        <p class="card-text text-muted small">MBBS, MS (Ortho), FRCS</p>
+                        <div class="d-flex justify-content-center gap-2 mb-3">
+                            <span class="badge bg-light text-dark"><i class="bi bi-star-fill text-warning me-1"></i> 4.7</span>
+                            <span class="badge bg-light text-dark"><i class="bi bi-briefcase-fill text-primary me-1"></i> 18 yrs</span>
+                        </div>
+                        <a href="doctor_profile.html" class="btn btn-sm btn-outline-primary me-2">View Profile</a>
+                        <a href="book_appointment.html" class="btn btn-sm btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pediatrician -->
+            <div class="col-md-6 col-lg-3">
+                <div class="doctor-card card shadow-sm h-100">
+                    <img src="../images/gallery/dentist.png" class="card-img-top doctor-img" alt="Pediatrician">
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-1">Dr. Nimali Jayasinghe</h5>
+                        <span class="specialty-badge mb-2">Pediatrician</span>
+                        <p class="card-text text-muted small">MBBS, MD (Pediatrics), DCH</p>
+                        <div class="d-flex justify-content-center gap-2 mb-3">
+                            <span class="badge bg-light text-dark"><i class="bi bi-star-fill text-warning me-1"></i> 4.9</span>
+                            <span class="badge bg-light text-dark"><i class="bi bi-briefcase-fill text-primary me-1"></i> 10 yrs</span>
+                        </div>
+                        <a href="doctor_profile.html" class="btn btn-sm btn-outline-primary me-2">View Profile</a>
+                        <a href="book_appointment.html" class="btn btn-sm btn-primary">Book Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="doctors.html" class="btn btn-primary px-4 py-2">View All Doctors <i class="bi bi-arrow-right ms-2"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">What Our Patients Say</h2>
+            <p class="lead text-muted">Trusted by thousands of patients across Sri Lanka</p>
+        </div>
+
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4 text-center">
+                                    <img src="../images/gallery/patient1.jpg" class="rounded-circle mb-3" width="80" height="80" alt="Patient">
+                                    <h5 class="mb-2">Kamal Perera</h5>
+                                    <div class="text-warning mb-3">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <p class="lead mb-0">"eChannelling made booking my cardiologist appointment so easy. The doctor was professional and the whole process was seamless. Highly recommended!"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4 text-center">
+                                    <img src="../images/gallery/patient2.jpg" class="rounded-circle mb-3" width="80" height="80" alt="Patient">
+                                    <h5 class="mb-2">Nayana Fernando</h5>
+                                    <div class="text-warning mb-3">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-half"></i>
+                                    </div>
+                                    <p class="lead mb-0">"The online consultation feature saved me so much time. I could talk to a specialist without leaving home. Excellent service!"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4 text-center">
+                                    <img src="../images/gallery/patient3.jpg" class="rounded-circle mb-3" width="80" height="80" alt="Patient">
+                                    <h5 class="mb-2">Sunil Rathnayake</h5>
+                                    <div class="text-warning mb-3">
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                        <i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <p class="lead mb-0">"Medicine delivery was fast and the prices were reasonable. The mobile app is very user-friendly too. Great job!"</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Blogs Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Latest Health Blogs</h2>
+            <p class="lead text-muted">Stay informed with our health tips and articles</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Blog 1 -->
+            <div class="col-md-4">
+                <div class="blog-card card shadow-sm h-100">
+                    <img src="../images/gallery/essential-plan.png" class="card-img-top blog-img" alt="Health Tips">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-primary">Health Tips</span>
+                            <small class="text-muted">2 days ago</small>
+                        </div>
+                        <h5 class="card-title">5 Essential Health Tips for a Stronger Immune System</h5>
+                        <p class="card-text">Learn how to boost your immune system naturally with a balanced diet, exercise, and proper sleep.</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="blog-post.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog 2 -->
+            <div class="col-md-4">
+                <div class="blog-card card shadow-sm h-100">
+                    <img src="../images/gallery/onlineconsult.png" class="card-img-top blog-img" alt="Telemedicine">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-success">Technology</span>
+                            <small class="text-muted">1 week ago</small>
+                        </div>
+                        <h5 class="card-title">The Future of Telemedicine: How Online Consultations Are Changing Healthcare</h5>
+                        <p class="card-text">Discover the benefits of telemedicine and how it's making healthcare more accessible.</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="blog-post.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog 3 -->
+            <div class="col-md-4">
+                <div class="blog-card card shadow-sm h-100">
+                    <img src="../images/gallery/eat.png" class="card-img-top blog-img" alt="Healthy Eating">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-warning text-dark">Nutrition</span>
+                            <small class="text-muted">3 days ago</small>
+                        </div>
+                        <h5 class="card-title">Healthy Eating: The Best Foods to Improve Brain Function</h5>
+                        <p class="card-text">Explore a list of brain-boosting foods that can enhance focus, memory, and overall cognitive health.</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="blog-post.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="container mt-5">
+            <div class="p-4 rounded-4 bg-white text-center" style="background: linear-gradient(135deg, #007bff, #0056b3); color: white;">
+                <h2>Welcome Aboard!</h2>
+                <p class="mt-3">
+                    We're excited to have you join our virtual platform, where we focus on delivering valuable insights,
+                    informative articles, and engaging healthcare discussions. Your presence adds to the vibrancy of our
+                    community, and we look forward to sharing knowledge and growing together.
+                    Let's make a positive impact in the world of healthcare!
+                </p>
+                <!-- Read More Blogs Button -->
+                <div class="mt-4">
+                    <a href="blog-channeling.html" class="btn btn-light text-primary fw-bold">Read More Blogs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3">Contact Us</h5>
+                <p><i class="bi bi-telephone me-2"></i> +94 71 0 225 225</p>
+                <p><i class="bi bi-envelope me-2"></i> info@echannelling.com</p>
+                <p><i class="bi bi-geo-alt me-2"></i> eChannelling PLC, No: 108, W A D Ramanayake Mawatha, Colombo 2, Sri Lanka.</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="about.html"><i class="bi bi-chevron-right me-1"></i> About Us</a></li>
+                    <li class="mb-2"><a href="services.html"><i class="bi bi-chevron-right me-1"></i> Our Services</a></li>
+                    <li class="mb-2"><a href="faq.html"><i class="bi bi-chevron-right me-1"></i> FAQ</a></li>
+                    <li class="mb-2"><a href="privacy.html"><i class="bi bi-chevron-right me-1"></i> Privacy Policy</a></li>
+                    <li class="mb-2"><a href="terms.html"><i class="bi bi-chevron-right me-1"></i> Terms & Conditions</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="col-md-4 mb-4">
+                <h5 class="mb-3">Newsletter</h5>
+                <p>Subscribe to our newsletter for the latest updates and health tips.</p>
+                <form class="mt-3">
+                    <div class="input-group mb-3">
+                        <input type="email" class="form-control" placeholder="Your Email" aria-label="Your Email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <h5 class="mb-3">Follow Us</h5>
+                <a href="https://www.facebook.com" class="social-icon" target="_blank">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com" class="social-icon" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com" class="social-icon" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.linkedin.com" class="social-icon" target="_blank">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.youtube.com" class="social-icon" target="_blank">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0">&copy; 2025 eChannelling PLC. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="mb-0">Designed with <i class="bi bi-heart-fill text-danger"></i> by eChannelling Team</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Back to Top Button -->
+<a href="#" class="back-to-top" id="backToTop">
+    <i class="bi bi-arrow-up"></i>
+</a>
+
+<script>
+    // Back to Top Button
+    const backToTop = document.getElementById('backToTop');
+
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTop.classList.add('active');
+        } else {
+            backToTop.classList.remove('active');
+        }
+    });
+
+    backToTop.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+
+    // Toggle Advanced Search Button Text
+    const toggleButton = document.getElementById('toggleButton');
+    const advancedSearch = document.getElementById('advancedSearch');
+
+    advancedSearch.addEventListener('show.bs.collapse', function() {
+        toggleButton.innerHTML = '<i class="bi bi-search me-1"></i> Advanced Search <i class="bi bi-chevron-up ms-1"></i>';
+    });
+
+    advancedSearch.addEventListener('hide.bs.collapse', function() {
+        toggleButton.innerHTML = '<i class="bi bi-search me-1"></i> Advanced Search <i class="bi bi-chevron-down ms-1"></i>';
+    });
+
+    // Initialize tooltips
+    $(function () {
+        $('[data-bs-toggle="tooltip"]').tooltip()
+    });
+
+    // Animate elements when they come into view
+    const animateOnScroll = function() {
+        const elements = document.querySelectorAll('.service-card, .doctor-card, .blog-card');
+
+        elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.2;
+
+            if (elementPosition < screenPosition) {
+                element.classList.add('animate__animated', 'animate__fadeInUp');
+            }
+        });
+    };
+
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+</script>
+</body>
+</html>
