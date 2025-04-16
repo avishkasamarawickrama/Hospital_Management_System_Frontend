@@ -99,6 +99,24 @@
             margin-top: 15px;
         }
 
+        .password-strength {
+            display: none;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .password-strength.weak {
+            color: red;
+        }
+
+        .password-strength.medium {
+            color: orange;
+        }
+
+        .password-strength.strong {
+            color: green;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -120,22 +138,49 @@
         <div class="mb-3">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" required>
+            <div id="password-strength" class="password-strength">Password strength: <span id="strength-label"></span></div>
         </div>
         <div class="mb-3">
             <label for="role" class="form-label">Role</label>
             <select class="form-control" id="role" required>
                 <option value="ADMIN">ADMIN</option>
-                <option value="USER">USER</option>
             </select>
         </div>
         <button type="submit" class="btn btn-primary w-50">Register</button>
         <button id="loginButton">Back to login</button>
     </form>
+    <div class="loading-spinner">
+        <span class="spinner-border text-primary" role="status"></span>
+    </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
 
-
 <script>
+    // Password strength indicator
+    document.getElementById('password').addEventListener('input', function () {
+        const password = this.value;
+        const strengthLabel = document.getElementById('strength-label');
+        const strengthElement = document.getElementById('password-strength');
+
+        let strength = '';
+        let strengthClass = '';
+
+        if (password.length < 6) {
+            strength = 'Weak';
+            strengthClass = 'weak';
+        } else if (password.length >= 6 && password.length < 10) {
+            strength = 'Medium';
+            strengthClass = 'medium';
+        } else {
+            strength = 'Strong';
+            strengthClass = 'strong';
+        }
+
+        strengthLabel.textContent = strength;
+        strengthElement.className = `password-strength ${strengthClass}`;
+        strengthElement.style.display = 'block';
+    });
+
     document.getElementById("registerForm").addEventListener("submit", function (event) {
         event.preventDefault();
 
@@ -144,14 +189,29 @@
         const password = document.getElementById("password").value;
         const role = document.getElementById("role").value;
 
+        // Basic validation
         if (!name || !email || !password || !role) {
             alert("Please fill all the fields.");
             return;
         }
 
+        // Validate email format
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email.");
+            return;
+        }
+
+        // Validate password strength
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return;
+        }
 
         const user = { name, email, password, role };
 
+        // Show loading spinner
+        $(".loading-spinner").show();
 
         fetch("http://localhost:8080/api/v1/user/register", {
             method: "POST",
@@ -162,6 +222,7 @@
         })
             .then(response => response.json())
             .then(data => {
+                $(".loading-spinner").hide(); // Hide spinner
                 if (data.code === 201) {
                     alert("Registration successful!");
                     window.location.href = "Frontend-Hospital/index.html";
@@ -170,6 +231,7 @@
                 }
             })
             .catch(error => {
+                $(".loading-spinner").hide();
                 console.error("Error during registration:", error);
                 alert("Registration failed. Please try again.");
             });

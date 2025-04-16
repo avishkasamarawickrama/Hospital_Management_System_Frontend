@@ -3,63 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Appointment</title>
+    <title>Appointment Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- SweetAlert2 CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --primary-color: #813271;
             --primary-dark: #6a2a5d;
             --secondary-color: #4e73df;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
         }
+
         body {
             background-color: #f8f9fa;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .appointment-container {
-            max-width: 800px;
-            margin: 50px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .header {
-            text-align: center;
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 500;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-weight: bold;
             margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
         }
-        .header h2 {
-            color: #0d6efd;
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .form-label {
             font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
         }
-        .time-slot {
-            display: inline-block;
-            padding: 5px 10px;
-            margin: 3px;
-            background: #e9ecef;
-            border-radius: 4px;
-            cursor: pointer;
+
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            padding: 10px 15px;
+            transition: all 0.3s;
         }
-        .time-slot:hover, .time-slot.selected {
-            background: #0d6efd;
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(129, 50, 113, 0.25);
+        }
+
+        .btn {
+            font-weight: 600;
+            padding: 10px 22px;
+            margin-right: 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-success {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-success:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #3b5fd9;
+            border-color: #3b5fd9;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+            transform: translateY(-2px);
+        }
+
+        .table {
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background-color: var(--secondary-color);
             color: white;
         }
-        .appointment-details {
-            background-color: #f8f9fa;
+
+        .table th {
+            font-weight: 600;
             padding: 15px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        #appointmentIdContainer {
-            transition: all 0.3s ease;
         }
 
-        #generatedAppointmentId {
-            font-weight: bold;
-            color: #0d6efd;
-            font-size: 1.1em;
+        .table td {
+            padding: 12px 15px;
+            vertical-align: middle;
         }
 
+        .table-hover tbody tr:hover {
+            background-color: rgba(78, 115, 223, 0.05);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 4px;
+        }
 
         .sidebar {
             background: linear-gradient(to bottom, var(--primary-color), var(--primary-dark));
@@ -110,58 +225,6 @@
             transition: margin-left 0.3s ease;
         }
 
-        .appointment-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h2 {
-            color: var(--primary-dark);
-            font-weight: 600;
-            position: relative;
-            padding-bottom: 15px;
-        }
-
-        .header h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background-color: var(--primary-color);
-        }
-
-        .time-slot {
-            display: inline-block;
-            padding: 5px 10px;
-            margin: 3px;
-            background: #e9ecef;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .time-slot:hover, .time-slot.selected {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        #appointmentIdContainer {
-            transition: all 0.3s ease;
-        }
-
-        #generatedAppointmentId {
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 1.1em;
-        }
-
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
@@ -173,9 +236,116 @@
                 transform: translateX(0);
             }
         }
+
+        .badge {
+            font-size: 0.85em;
+            padding: 6px 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Loading spinner */
+        .spinner-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Custom alerts */
+        .swal2-popup {
+            font-family: 'Inter', sans-serif;
+            border-radius: 10px;
+        }
+
+        .swal2-title {
+            font-weight: 700;
+        }
+
+        .swal2-confirm {
+            background-color: var(--primary-color) !important;
+        }
+
+        .swal2-cancel {
+            background-color: #6c757d !important;
+        }
+
+        /* Status badges */
+        .badge-pending {
+            background-color: #6c757d;
+        }
+        .badge-confirmed {
+            background-color: #28a745;
+        }
+        .badge-completed {
+            background-color: #17a2b8;
+        }
+        .badge-cancelled {
+            background-color: #dc3545;
+        }
+        .badge-no-show {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .badge-paid {
+            background-color: #28a745;
+        }
+        .badge-payment-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .badge-failed {
+            background-color: #dc3545;
+        }
+        .badge-refunded {
+            background-color: #6c757d;
+        }
     </style>
 </head>
 <body>
+<!-- Loading Spinner -->
+<div class="spinner-container" id="loadingSpinner">
+    <div class="spinner"></div>
+</div>
+
 <!-- Sidebar -->
 <div class="sidebar" id="sidebar">
     <img src="../images/gallery/health_care.png" alt="Hospital Logo" class="sidebar-logo">
@@ -192,12 +362,12 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="appointment.html">
+            <a class="nav-link active" href="appointment.html">
                 <i class="bi bi-calendar-check"></i> Appointments
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="doctor.html">
+            <a class="nav-link" href="doctor.html">
                 <i class="bi bi-person-badge"></i> Doctors
             </a>
         </li>
@@ -228,189 +398,329 @@
         </li>
     </ul>
 </div>
-<div class="container appointment-container">
-    <div class="header">
-        <h2>Create New Appointment</h2>
-        <p class="text-muted">Fill the form to book your appointment</p>
-    </div>
 
-    <form id="appointmentForm">
+<div class="main-content">
+    <section id="appointmentSec">
+        <h2>Appointment Management</h2>
+
+        <div class="form-section">
+            <form id="appointmentForm">
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="appointmentId" class="form-label">Appointment ID</label>
+                        <input type="text" class="form-control" id="appointmentId" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="appointmentDate" class="form-label">Appointment Date</label>
+                        <input type="date" class="form-control" id="appointmentDate" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="doctorId" class="form-label">Doctor</label>
+                        <select class="form-control" id="doctorId" required onchange="loadDoctorDetails()">
+                            <option value="">Select Doctor</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="patientId" class="form-label">Patient</label>
+                        <select class="form-control" id="patientId" required>
+                            <option value="">Select Patient</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="doctorName" class="form-label">Doctor Name</label>
+                        <input type="text" class="form-control" id="doctorName" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="departmentName" class="form-label">Department</label>
+                        <input type="text" class="form-control" id="departmentName" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="channelingFee" class="form-label">Channeling Fee</label>
+                        <input type="number" step="0.01" class="form-control" id="channelingFee" readonly>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="patientName" class="form-label">Patient Name</label>
+                        <input type="text" class="form-control" id="patientName" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="patientContact" class="form-label">Patient Contact</label>
+                        <input type="text" class="form-control" id="patientContact" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="queueNumber" class="form-label">Queue Number</label>
+                        <input type="number" class="form-control" id="queueNumber" readonly>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="appointmentTime" class="form-label">Time Slot</label>
+                        <select class="form-control" id="appointmentTime" required>
+                            <option value="">Select Time Slot</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status">
+                            <option value="PENDING">Pending</option>
+                            <option value="CONFIRMED">Confirmed</option>
+                            <option value="COMPLETED">Completed</option>
+                            <option value="CANCELLED">Cancelled</option>
+                            <option value="NO_SHOW">No Show</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="paymentStatus" class="form-label">Payment Status</label>
+                        <select class="form-control" id="paymentStatus">
+                            <option value="PENDING">Pending</option>
+                            <option value="PAID">Paid</option>
+                            <option value="FAILED">Failed</option>
+                            <option value="REFUNDED">Refunded</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-success" onclick="saveAppointment()">
+                        <i class="bi bi-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="updateAppointment()">
+                        <i class="bi bi-pencil-square"></i> Update
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="deleteAppointment()">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                    <button type="reset" class="btn btn-secondary" onclick="clearForm()">
+                        <i class="bi bi-x-circle"></i> Clear
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="patientId" class="form-label">Select Patient</label>
-                <select class="form-select" id="patientId" required onchange="loadPatientDetails()">
-                    <option value="">Select Patient</option>
+            <div class="col-md-4">
+                <label for="filterDate" class="form-label">Filter by Date</label>
+                <input type="date" class="form-control" id="filterDate" onchange="filterAppointments()">
+            </div>
+            <div class="col-md-4">
+                <label for="filterDoctor" class="form-label">Filter by Doctor</label>
+                <select class="form-control" id="filterDoctor" onchange="filterAppointments()">
+                    <option value="">All Doctors</option>
                     <!-- Will be populated dynamically -->
                 </select>
             </div>
-            <div class="col-md-6">
-                <label for="patientName" class="form-label">Patient Name</label>
-                <input type="text" class="form-control" id="patientName" readonly>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="doctorId" class="form-label">Doctor</label>
-                <select class="form-select" id="doctorId" required onchange="loadDoctorDetails()">
-                    <option value="">Select Doctor</option>
-                    <!-- Will be populated dynamically -->
+            <div class="col-md-4">
+                <label for="filterStatus" class="form-label">Filter by Status</label>
+                <select class="form-control" id="filterStatus" onchange="filterAppointments()">
+                    <option value="">All Statuses</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="CONFIRMED">Confirmed</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="CANCELLED">Cancelled</option>
+                    <option value="NO_SHOW">No Show</option>
                 </select>
             </div>
-            <div class="col-md-6">
-                <label for="department" class="form-label">Department</label>
-                <input type="text" class="form-control" id="department" readonly>
-            </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <label for="appointmentDate" class="form-label">Date</label>
-                <input type="date" class="form-control" id="appointmentDate" required onchange="loadAvailableTimes()">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Available Time Slots</label>
-                <div id="timeSlotsContainer">
-                    <p class="text-muted">Select a doctor and date first</p>
-                </div>
-                <input type="hidden" id="appointmentTime">
-            </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Doctor</th>
+                    <th>Patient</th>
+                    <th>Queue</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="appointmentTableBody"></tbody>
+            </table>
         </div>
-
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label for="queueNumber" class="form-label">Queue Number</label>
-                <input type="text" class="form-control" id="queueNumber" readonly>
-            </div>
-            <div class="col-md-4">
-                <label for="channelingFee" class="form-label">Channeling Fee (LKR)</label>
-                <input type="text" class="form-control" id="channelingFee" readonly>
-            </div>
-            <div class="col-md-4">
-                <label for="maxAppointments" class="form-label">Max Appointments</label>
-                <input type="text" class="form-control" id="maxAppointments" readonly>
-            </div>
-        </div>
-
-        <div class="appointment-details" id="appointmentSummary" style="display: none;">
-            <h5>Appointment Summary</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Patient:</strong> <span id="summaryPatient"></span></p>
-                    <p><strong>Doctor:</strong> <span id="summaryDoctor"></span></p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Date:</strong> <span id="summaryDate"></span></p>
-                    <p><strong>Time:</strong> <span id="summaryTime"></span></p>
-                </div>
-            </div>
-            <p><strong>Queue Number:</strong> <span id="summaryQueue"></span></p>
-            <p><strong>Fee:</strong> <span id="summaryFee"></span> LKR</p>
-        </div>
-        <div class="row mb-3" id="appointmentIdContainer" style="display: none;">
-            <div class="col-md-12">
-                <div class="alert alert-success">
-                    <strong>Appointment ID:</strong> <span id="generatedAppointmentId"></span>
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary w-100 py-2">
-            <i class="bi bi-calendar-check"></i> Confirm Appointment
-        </button>
-    </form>
+    </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Document ready function
-    $(document).ready(function() {
-        // Set minimum date to today
-        const today = new Date().toISOString().split('T')[0];
-        $("#appointmentDate").attr('min', today);
+    // Show loading spinner
+    function showLoading() {
+        document.getElementById('loadingSpinner').style.display = 'flex';
+    }
 
-        // Load patients and doctors dropdowns
-        loadPatients();
-        loadDoctors();
-    });
+    // Hide loading spinner
+    function hideLoading() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }
 
-    // Load patients dropdown
-    function loadPatients() {
-        // Show loading
-        $("#patientId").html('<option value="">Loading patients...</option>');
+    // Custom alert functions using SweetAlert2
+    function showSuccessAlert(message) {
+        Swal.fire({
+            title: 'Success!',
+            text: message,
+            icon: 'success',
+            confirmButtonColor: '#813271',
+            timer: 2500,
+            timerProgressBar: true
+        });
+    }
 
-        // Make API call to get patients
-        $.ajax({
-            url: "http://localhost:8080/api/v1/patient/getAll",
-            type: "GET",
-            headers: { "Authorization": `Bearer ${localStorage.getItem('authToken')}` },
-            success: function(response) {
-                if(response.data && response.data.length > 0) {
-                    let html = '<option value="">Select Patient</option>';
-                    response.data.forEach(patient => {
-                        html += `<option value="${patient.patientId}" data-name="${patient.fullName}">
-                                ${patient.fullName} (${patient.patientId})
-                            </option>`;
-                    });
-                    $("#patientId").html(html);
-                } else {
-                    $("#patientId").html('<option value="">No patients available</option>');
-                }
-            },
-            error: function(xhr) {
-                $("#patientId").html('<option value="">Error loading patients</option>');
+    function showErrorAlert(message) {
+        Swal.fire({
+            title: 'Error!',
+            text: message,
+            icon: 'error',
+            confirmButtonColor: '#813271'
+        });
+    }
+
+    function showWarningAlert(message) {
+        Swal.fire({
+            title: 'Warning!',
+            text: message,
+            icon: 'warning',
+            confirmButtonColor: '#813271'
+        });
+    }
+
+    function showConfirmAlert(message, callback) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: message,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#813271',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, proceed!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                callback();
             }
         });
     }
 
-    // Load patient details when selected
-    function loadPatientDetails() {
-        const patientId = $("#patientId").val();
-        if(!patientId) {
-            $("#patientName").val("");
+    // Document ready function
+    document.addEventListener("DOMContentLoaded", function () {
+        generateNextAppointmentId();
+        loadDoctors();
+        loadPatients();
+        loadAppointments();
+    });
+
+    // Generate next appointment ID
+    function generateNextAppointmentId() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            window.location.href = "login.html";
             return;
         }
 
-        // Get selected patient's name from dropdown option
-        const selectedOption = $("#patientId option:selected");
-        const patientName = selectedOption.data('name');
-
-        // Update patient name field
-        $("#patientName").val(patientName);
-        updateAppointmentSummary();
+        showLoading();
+        $.ajax({
+            url: "http://localhost:8080/api/v1/appointment/getNextAppointmentId",
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function (response) {
+                if (response.data) {
+                    $("#appointmentId").val(response.data);
+                } else {
+                    // Fallback if API fails
+                    const randomNum = Math.floor(Math.random() * 900) + 100;
+                    $("#appointmentId").val("APT" + randomNum);
+                }
+                hideLoading();
+            },
+            error: function (xhr) {
+                console.error("Error getting next appointment ID:", xhr);
+                // Fallback if API fails
+                const randomNum = Math.floor(Math.random() * 900) + 100;
+                $("#appointmentId").val("APT" + randomNum);
+                hideLoading();
+            }
+        });
     }
 
-    // Load doctors dropdown
+    // Load doctors for dropdown
     function loadDoctors() {
-        // Show loading
-        $("#doctorId").html('<option value="">Loading doctors...</option>');
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
 
-        // Make API call to get doctors
+        showLoading();
         $.ajax({
             url: "http://localhost:8080/api/v1/doctor/getAll",
             type: "GET",
-            headers: { "Authorization": `Bearer ${localStorage.getItem('authToken')}` },
+            headers: {"Authorization": `Bearer ${authToken}`},
             success: function(response) {
-                if(response.data && response.data.length > 0) {
-                    let html = '<option value="">Select Doctor</option>';
+                const doctorSelect = $("#doctorId");
+                const filterDoctorSelect = $("#filterDoctor");
+
+                doctorSelect.empty();
+                doctorSelect.append('<option value="">Select Doctor</option>');
+
+                filterDoctorSelect.empty();
+                filterDoctorSelect.append('<option value="">All Doctors</option>');
+
+                if (response.data && Array.isArray(response.data)) {
                     response.data.forEach(doctor => {
-                        html += `<option value="${doctor.doctorId}"
-                                  data-dept="${doctor.departmentName}"
-                                  data-fee="${doctor.channelingFee}"
-                                  data-max="${doctor.maxAppointmentsPerDay}"
-                                  data-from="${doctor.availableFrom}"
-                                  data-to="${doctor.availableTo}">
-                                ${doctor.fullName} (${doctor.departmentName})
-                            </option>`;
+                        doctorSelect.append(`<option value="${doctor.doctorId}">${doctor.fullName} (${doctor.specialization})</option>`);
+                        filterDoctorSelect.append(`<option value="${doctor.doctorId}">${doctor.fullName}</option>`);
                     });
-                    $("#doctorId").html(html);
-                } else {
-                    $("#doctorId").html('<option value="">No doctors available</option>');
                 }
+                hideLoading();
             },
             error: function(xhr) {
-                $("#doctorId").html('<option value="">Error loading doctors</option>');
+                showErrorAlert("Error loading doctors: " + xhr.statusText);
+                hideLoading();
+            }
+        });
+    }
+
+    // Load patients for dropdown
+    function loadPatients() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        showLoading();
+        $.ajax({
+            url: "http://localhost:8080/api/v1/patient/getAll",
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function(response) {
+                const select = $("#patientId");
+                select.empty();
+                select.append('<option value="">Select Patient</option>');
+
+                if (response.data && Array.isArray(response.data)) {
+                    response.data.forEach(patient => {
+                        select.append(`<option value="${patient.patientId}">${patient.fullName} (${patient.nic})</option>`);
+                    });
+                }
+                hideLoading();
+            },
+            error: function(xhr) {
+                showErrorAlert("Error loading patients: " + xhr.statusText);
+                hideLoading();
             }
         });
     }
@@ -418,217 +728,473 @@
     // Load doctor details when selected
     function loadDoctorDetails() {
         const doctorId = $("#doctorId").val();
-        if(!doctorId) {
-            $("#department").val("");
-            $("#channelingFee").val("");
-            $("#maxAppointments").val("");
-            return;
-        }
+        if (!doctorId) return;
 
-        // Get selected doctor's data from dropdown options
-        const selectedOption = $("#doctorId option:selected");
-        const department = selectedOption.data('dept');
-        const fee = selectedOption.data('fee');
-        const maxAppts = selectedOption.data('max');
-        const availableFrom = selectedOption.data('from');
-        const availableTo = selectedOption.data('to');
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) return;
 
-        // Update form fields
-        $("#department").val(department);
-        $("#channelingFee").val(fee);
-        $("#maxAppointments").val(maxAppts);
+        showLoading();
+        $.ajax({
+            url: `http://localhost:8080/api/v1/doctor/getDoctorById/${doctorId}`,
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function(response) {
+                if (response.data) {
+                    const doctor = response.data;
+                    $("#doctorName").val(doctor.fullName);
+                    $("#departmentName").val(doctor.departmentName);
+                    $("#channelingFee").val(doctor.channelingFee?.toFixed(2) || '0.00');
 
-        // If date is already selected, load available times
-        if($("#appointmentDate").val()) {
-            loadAvailableTimes();
-        }
-
-        updateAppointmentSummary();
+                    // Load available time slots
+                    loadAvailableTimeSlots(doctorId, $("#appointmentDate").val());
+                }
+                hideLoading();
+            },
+            error: function(xhr) {
+                console.error("Error loading doctor details:", xhr);
+                hideLoading();
+            }
+        });
     }
 
-    // Load available time slots based on doctor and date
-    function loadAvailableTimes() {
-        const doctorId = $("#doctorId").val();
-        const date = $("#appointmentDate").val();
+    function loadAvailableTimeSlots(doctorId, date) {
+        if (!doctorId || !date) return;
 
-        if(!doctorId || !date) {
-            $("#timeSlotsContainer").html('<p class="text-muted">Select a doctor and date first</p>');
-            return;
-        }
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) return;
 
-        // Show loading
-        $("#timeSlotsContainer").html('<p class="text-muted">Loading available times...</p>');
-
-        // Make API call to get available time slots
+        showLoading();
         $.ajax({
-            url: `http://localhost:8080/api/v1/appointment/getAvailableSlots/${doctorId}/${date}`,
+            url: `http://localhost:8080/api/v1/appointment/getAvailableSlots?doctorId=${doctorId}&date=${date}`,
             type: "GET",
-            headers: { "Authorization": `Bearer ${localStorage.getItem('authToken')}` },
+            headers: {"Authorization": `Bearer ${authToken}`},
             success: function(response) {
-                if(response.data && response.data.length > 0) {
-                    let html = '<div class="d-flex flex-wrap">';
+                const select = $("#appointmentTime");
+                select.empty();
+                select.append('<option value="">Select Time Slot</option>');
+
+                if (response.data && Array.isArray(response.data)) {
                     response.data.forEach(time => {
-                        // Format time for display (remove seconds if present)
-                        const displayTime = time.length > 5 ? time.substring(0,5) : time;
-                        html += `<div class="time-slot" onclick="selectTimeSlot('${time}')">${displayTime}</div>`;
+                        // Convert LocalTime to string format (HH:mm)
+                        const timeStr = time.length === 5 ? time : time.substring(0, 5);
+                        select.append(`<option value="${timeStr}">${timeStr}</option>`);
                     });
-                    html += '</div>';
-                    $("#timeSlotsContainer").html(html);
-
-                    // Calculate and display queue number
-                    calculateQueueNumber();
-                } else {
-                    $("#timeSlotsContainer").html('<p class="text-danger">No available time slots for this date</p>');
                 }
+                hideLoading();
             },
             error: function(xhr) {
-                $("#timeSlotsContainer").html('<p class="text-danger">Error loading time slots</p>');
+                console.error("Error loading time slots:", xhr);
+                hideLoading();
             }
         });
     }
 
-    // Select time slot
-    function selectTimeSlot(time) {
-        $(".time-slot").removeClass("selected");
-        $(event.target).addClass("selected");
-        $("#appointmentTime").val(time);
-        updateAppointmentSummary();
-    }
+    // Load patient details when selected
+    function loadPatientDetails() {
+        const patientId = $("#patientId").val();
+        if (!patientId) return;
 
-    // Calculate queue number based on existing appointments for the day
-    function calculateQueueNumber() {
-        const doctorId = $("#doctorId").val();
-        const date = $("#appointmentDate").val();
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) return;
 
-        if(!doctorId || !date) return;
-
-        // Make API call to get queue number
+        showLoading();
         $.ajax({
-            url: `http://localhost:8080/api/v1/appointment/getByDoctorAndDate/${doctorId}/${date}`,
+            url: `http://localhost:8080/api/v1/patient/getPatientById/${patientId}`,
             type: "GET",
-            headers: { "Authorization": `Bearer ${localStorage.getItem('authToken')}` },
+            headers: {"Authorization": `Bearer ${authToken}`},
             success: function(response) {
-                if(response.data) {
-                    // Queue number is count of existing appointments + 1
-                    $("#queueNumber").val(response.data.length + 1);
-                    updateAppointmentSummary();
+                if (response.data) {
+                    const patient = response.data;
+                    $("#patientName").val(patient.fullName);
+                    $("#patientContact").val(patient.phoneNumber);
                 }
+                hideLoading();
             },
             error: function(xhr) {
-                console.error("Error calculating queue number:", xhr);
+                console.error("Error loading patient details:", xhr);
+                hideLoading();
             }
         });
     }
 
-    // Update appointment summary section
-    function updateAppointmentSummary() {
-        const patientName = $("#patientName").val();
-        const doctorName = $("#doctorId option:selected").text().split(' (')[0];
-        const date = $("#appointmentDate").val();
-        const time = $("#appointmentTime").val();
-        const queue = $("#queueNumber").val();
-        const fee = $("#channelingFee").val();
+    // Validate appointment form
+    function validateAppointmentForm() {
+        const appointmentDate = $("#appointmentDate").val();
+        const doctorId = $("#doctorId").val();
+        const patientId = $("#patientId").val();
+        const appointmentTime = $("#appointmentTime").val();
 
-        if(patientName && doctorName && date && time) {
-            $("#summaryPatient").text(patientName);
-            $("#summaryDoctor").text(doctorName);
-            $("#summaryDate").text(date);
-            $("#summaryTime").text(time);
-            $("#summaryQueue").text(queue);
-            $("#summaryFee").text(fee);
-            $("#appointmentSummary").show();
-        } else {
-            $("#appointmentSummary").hide();
+        if (!appointmentDate) {
+            showWarningAlert("Appointment date is required");
+            return false;
         }
+        if (!doctorId) {
+            showWarningAlert("Doctor is required");
+            return false;
+        }
+        if (!patientId) {
+            showWarningAlert("Patient is required");
+            return false;
+        }
+        if (!appointmentTime) {
+            showWarningAlert("Time slot is required");
+            return false;
+        }
+        return true;
     }
-    $("#appointmentForm").on('submit', function(e) {
-        e.preventDefault();
 
-        // Validate form
-        if(!$("#patientId").val() || !$("#doctorId").val() ||
-            !$("#appointmentDate").val() || !$("#appointmentTime").val()) {
-            Swal.fire('Error', 'Please fill all required fields', 'error');
+    function saveAppointment() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            window.location.href = "login.html";
             return;
         }
 
-        // Prepare appointment data
-        const appointmentData = {
+        if (!validateAppointmentForm()) return;
+
+        let appointment = {
+            doctorId: parseInt($("#doctorId").val()),
             patientId: $("#patientId").val(),
-            doctorId: $("#doctorId").val(),
             appointmentDate: $("#appointmentDate").val(),
             appointmentTime: $("#appointmentTime").val(),
-            queueNumber: $("#queueNumber").val(),
-            channelingFee: $("#channelingFee").val(),
-            status: "PENDING",
-            paymentStatus: "PENDING"
+            status: $("#status").val(),
+            paymentStatus: $("#paymentStatus").val(),
+            channelingFee: parseFloat($("#channelingFee").val())
         };
 
-        // Show loading
-        Swal.fire({
-            title: 'Creating Appointment',
-            html: 'Please wait...',
-            allowOutsideClick: false,
-            didOpen: () => Swal.showLoading()
-        });
-
-        // Make API call
+        showLoading();
         $.ajax({
             url: "http://localhost:8080/api/v1/appointment/save",
             type: "POST",
             contentType: "application/json",
-            headers: {
-                "Authorization": `Bearer ${localStorage.getItem('authToken')}`
-            },
-            data: JSON.stringify(appointmentData),
+            headers: {"Authorization": `Bearer ${authToken}`},
+            data: JSON.stringify(appointment),
             success: function(response) {
-                Swal.close();
-
-                if(response.code === 200 && response.data) {
-                    const appointmentInfo = {
-                        appointmentId: response.data.appointmentId,
-                        patientId: $("#patientId").val(),
-                        patientName: $("#patientName").val(),
-                        doctorId: $("#doctorId").val(),
-                        doctorName: $("#doctorId option:selected").text().split(' (')[0],
-                        appointmentDate: $("#appointmentDate").val(),
-                        appointmentTime: $("#appointmentTime").val(),
-                        queueNumber: response.data.queueNumber, // Use the queue number from server
-                        channelingFee: $("#channelingFee").val()
-                    };
-
-                    // Display the generated appointment ID
-                    $("#generatedAppointmentId").text(response.data.appointmentId);
-                    $("#appointmentIdContainer").show();
-
-                    // Update queue number with the one from server
-                    $("#queueNumber").val(response.data.queueNumber);
-                    updateAppointmentSummary();
-
-                    localStorage.setItem('currentAppointment', JSON.stringify(appointmentInfo));
-
-                    Swal.fire({
-                        title: 'Success!',
-                        text: `Appointment created with ID: ${response.data.appointmentId}\nQueue Number: ${response.data.queueNumber}`,
-                        icon: 'success',
-                        showCancelButton: true,
-                        confirmButtonText: 'Proceed to Payment',
-                        cancelButtonText: 'Stay on Page',
-                        confirmButtonColor: '#813271'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = 'payment.html';
-                        }
-                    });
+                if (response && response.code === 200) {
+                    showSuccessAlert(response.message);
+                    loadAppointments(); // This should now work
+                    clearForm();
+                    generateNextAppointmentId();
                 } else {
-                    Swal.fire('Error', response.message || 'Failed to create appointment', 'error');
+                    showErrorAlert(response?.message || "Failed to save appointment");
                 }
+                hideLoading();
             },
             error: function(xhr) {
-                Swal.fire('Error',
-                    xhr.responseJSON?.message || 'Failed to create appointment',
-                    'error');
+                hideLoading();
+                showErrorAlert("Error: " + (xhr.responseJSON?.message || xhr.statusText));
             }
         });
+    }
+    // Load appointments
+    function loadAppointments() {
+        console.log("Loading appointments..."); // Debug log
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            window.location.href = "login.html";
+            return;
+        }
+
+        showLoading();
+        $.ajax({
+            url: "http://localhost:8080/api/v1/appointment/getAll",
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function(response) {
+                console.log("Appointments loaded:", response); // Debug log
+                $("#appointmentTableBody").empty();
+                if(response.data && Array.isArray(response.data)) {
+                    response.data.forEach(appointment => {
+                        // Format date and time
+                        const date = new Date(appointment.appointmentDate);
+                        const formattedDate = date.toLocaleDateString();
+                        const time = appointment.appointmentTime.substring(0, 5);
+
+                        // Get status badge class
+                        let statusBadgeClass = '';
+                        switch(appointment.status) {
+                            case 'PENDING': statusBadgeClass = 'badge-pending'; break;
+                            case 'CONFIRMED': statusBadgeClass = 'badge-confirmed'; break;
+                            case 'COMPLETED': statusBadgeClass = 'badge-completed'; break;
+                            case 'CANCELLED': statusBadgeClass = 'badge-cancelled'; break;
+                            case 'NO_SHOW': statusBadgeClass = 'badge-no-show'; break;
+                        }
+
+                        // Get payment status badge class
+                        let paymentBadgeClass = '';
+                        switch(appointment.paymentStatus) {
+                            case 'PENDING': paymentBadgeClass = 'badge-payment-pending'; break;
+                            case 'PAID': paymentBadgeClass = 'badge-paid'; break;
+                            case 'FAILED': paymentBadgeClass = 'badge-failed'; break;
+                            case 'REFUNDED': paymentBadgeClass = 'badge-refunded'; break;
+                        }
+
+                        $("#appointmentTableBody").append(`
+                            <tr>
+                                <td>${appointment.appointmentId}</td>
+                                <td>${formattedDate}</td>
+                                <td>${time}</td>
+                                <td>${appointment.doctorName}</td>
+                                <td>${appointment.patientName}</td>
+                                <td>${appointment.queueNumber}</td>
+                                <td>$${appointment.channelingFee?.toFixed(2) || '0.00'}</td>
+                                <td><span class="badge ${statusBadgeClass}">${appointment.status}</span></td>
+                                <td><span class="badge ${paymentBadgeClass}">${appointment.paymentStatus}</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning"
+                                        onclick="editAppointment('${appointment.appointmentId}')">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="confirmDeleteAppointment('${appointment.appointmentId}')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+                hideLoading();
+            },
+            error: function(xhr) {
+                console.error("Error loading appointments:", xhr);
+                showErrorAlert("Error loading appointments: " + xhr.statusText);
+                hideLoading();
+            }
+        });
+    }
+
+    // Filter appointments
+    function filterAppointments() {
+        const date = $("#filterDate").val();
+        const doctorId = $("#filterDoctor").val();
+        const status = $("#filterStatus").val();
+
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) return;
+
+        showLoading();
+
+        let url = "http://localhost:8080/api/v1/appointment/filter?";
+        if (date) url += `date=${date}&`;
+        if (doctorId) url += `doctorId=${doctorId}&`;
+        if (status) url += `status=${status}`;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function(response) {
+                $("#appointmentTableBody").empty();
+                if(response.data && Array.isArray(response.data)) {
+                    response.data.forEach(appointment => {
+                        // Format date and time
+                        const date = new Date(appointment.appointmentDate);
+                        const formattedDate = date.toLocaleDateString();
+                        const time = appointment.appointmentTime.substring(0, 5);
+
+                        // Get status badge class
+                        let statusBadgeClass = '';
+                        switch(appointment.status) {
+                            case 'PENDING': statusBadgeClass = 'badge-pending'; break;
+                            case 'CONFIRMED': statusBadgeClass = 'badge-confirmed'; break;
+                            case 'COMPLETED': statusBadgeClass = 'badge-completed'; break;
+                            case 'CANCELLED': statusBadgeClass = 'badge-cancelled'; break;
+                            case 'NO_SHOW': statusBadgeClass = 'badge-no-show'; break;
+                        }
+
+                        // Get payment status badge class
+                        let paymentBadgeClass = '';
+                        switch(appointment.paymentStatus) {
+                            case 'PENDING': paymentBadgeClass = 'badge-payment-pending'; break;
+                            case 'PAID': paymentBadgeClass = 'badge-paid'; break;
+                            case 'FAILED': paymentBadgeClass = 'badge-failed'; break;
+                            case 'REFUNDED': paymentBadgeClass = 'badge-refunded'; break;
+                        }
+
+                        $("#appointmentTableBody").append(`
+                            <tr>
+                                <td>${appointment.appointmentId}</td>
+                                <td>${formattedDate}</td>
+                                <td>${time}</td>
+                                <td>${appointment.doctorName}</td>
+                                <td>${appointment.patientName}</td>
+                                <td>${appointment.queueNumber}</td>
+                                <td>$${appointment.channelingFee?.toFixed(2) || '0.00'}</td>
+                                <td><span class="badge ${statusBadgeClass}">${appointment.status}</span></td>
+                                <td><span class="badge ${paymentBadgeClass}">${appointment.paymentStatus}</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning"
+                                        onclick="editAppointment('${appointment.appointmentId}')">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-danger"
+                                        onclick="confirmDeleteAppointment('${appointment.appointmentId}')">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                }
+                hideLoading();
+            },
+            error: function(xhr) {
+                console.error("Error filtering appointments:", xhr);
+                showErrorAlert("Error filtering appointments: " + xhr.statusText);
+                hideLoading();
+            }
+        });
+    }
+
+    // Edit appointment function
+    function editAppointment(appointmentId) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            return;
+        }
+
+        showLoading();
+        $.ajax({
+            url: `http://localhost:8080/api/v1/appointment/getAppointmentById/${appointmentId}`,
+            type: "GET",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function(response) {
+                if(response.data) {
+                    const appointment = response.data;
+                    $("#appointmentId").val(appointment.appointmentId);
+                    $("#appointmentDate").val(appointment.appointmentDate);
+                    $("#doctorId").val(appointment.doctorId);
+                    $("#patientId").val(appointment.patientId);
+                    $("#appointmentTime").val(appointment.appointmentTime);
+                    $("#status").val(appointment.status);
+                    $("#paymentStatus").val(appointment.paymentStatus);
+                    $("#channelingFee").val(appointment.channelingFee);
+
+                    // Load doctor details
+                    $("#doctorName").val(appointment.doctorName);
+                    $("#departmentName").val(appointment.departmentName);
+
+                    // Load patient details
+                    $("#patientName").val(appointment.patientName);
+                    $("#patientContact").val(appointment.patientContact);
+
+                    // Set queue number
+                    $("#queueNumber").val(appointment.queueNumber);
+
+                    // Scroll to form
+                    $('html, body').animate({
+                        scrollTop: $("#appointmentForm").offset().top
+                    }, 500);
+                }
+                hideLoading();
+            },
+            error: function(xhr) {
+                showErrorAlert("Error loading appointment: " + xhr.statusText);
+                hideLoading();
+            }
+        });
+    }
+
+    // Update appointment function
+    function updateAppointment() {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            return;
+        }
+
+        if (!validateAppointmentForm()) return;
+
+        let appointment = {
+            appointmentId: $("#appointmentId").val(),
+            doctorId: $("#doctorId").val(),
+            patientId: $("#patientId").val(),
+            appointmentDate: $("#appointmentDate").val(),
+            appointmentTime: $("#appointmentTime").val(),
+            status: $("#status").val(),
+            paymentStatus: $("#paymentStatus").val(),
+            channelingFee: parseFloat($("#channelingFee").val())
+        };
+
+        showLoading();
+        $.ajax({
+            url: "http://localhost:8080/api/v1/appointment/update",
+            type: "PUT",
+            contentType: "application/json",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            data: JSON.stringify(appointment),
+            success: function(response) {
+                showSuccessAlert(response.msg || "Appointment updated successfully");
+                loadAppointments();
+                clearForm();
+                generateNextAppointmentId();
+                hideLoading();
+            },
+            error: function(xhr) {
+                showErrorAlert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+                hideLoading();
+            }
+        });
+    }
+
+    // Confirm delete function
+    function confirmDeleteAppointment(appointmentId) {
+        showConfirmAlert(`Are you sure you want to delete appointment ${appointmentId}?`, function() {
+            deleteAppointment(appointmentId);
+        });
+    }
+
+    // Delete appointment function
+    function deleteAppointment(appointmentId) {
+        const authToken = localStorage.getItem('authToken');
+        if (!authToken) {
+            showErrorAlert("Please login first");
+            return;
+        }
+
+        showLoading();
+        $.ajax({
+            url: `http://localhost:8080/api/v1/appointment/delete/${appointmentId}`,
+            type: "DELETE",
+            headers: {"Authorization": `Bearer ${authToken}`},
+            success: function(response) {
+                showSuccessAlert(response.msg || "Appointment deleted successfully");
+                loadAppointments();
+                hideLoading();
+            },
+            error: function(xhr) {
+                showErrorAlert("Error: " + (xhr.responseJSON?.msg || xhr.statusText));
+                hideLoading();
+            }
+        });
+    }
+
+    // Clear form function
+    function clearForm() {
+        $("#appointmentForm")[0].reset();
+        $("#doctorName").val('');
+        $("#departmentName").val('');
+        $("#patientName").val('');
+        $("#patientContact").val('');
+        $("#queueNumber").val('');
+        $("#channelingFee").val('');
+        generateNextAppointmentId();
+    }
+
+    // Event listeners
+    $("#patientId").change(function() {
+        loadPatientDetails();
+    });
+
+    $("#appointmentDate").change(function() {
+        const doctorId = $("#doctorId").val();
+        if (doctorId) {
+            loadAvailableTimeSlots(doctorId, $(this).val());
+        }
     });
 </script>
 </body>
